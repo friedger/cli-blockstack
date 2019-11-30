@@ -46,7 +46,7 @@ export interface UTXO {
 class CLITransactionSigner implements TransactionSigner {
   address: string;
   isComplete: boolean;
-   
+
   constructor(address: string = '') {
     this.address = address;
     this.isComplete = false;
@@ -103,7 +103,7 @@ export class MultiSigKeySigner extends CLITransactionSigner {
       });
     });
   }
-   
+
   signerVersion() : number { return 0; }
 }
 
@@ -121,7 +121,7 @@ export class SegwitP2SHKeySigner extends CLITransactionSigner {
     this.address = bitcoinjs.address.toBase58Check(
       bitcoinjs.crypto.hash160(this.redeemScript),
       blockstack.config.network.layer1.scriptHash);
-   
+
     this.privateKeys = privateKeys;
     this.m = m;
     this.isComplete = true;
@@ -137,7 +137,7 @@ export class SegwitP2SHKeySigner extends CLITransactionSigner {
     const private_tx = (txIn as any).__TX;
     const txidBuf = new Buffer(private_tx.ins[signingIndex].hash.slice());
     const outpoint = private_tx.ins[signingIndex].index;
-    
+
     txidBuf.reverse(); // NOTE: bitcoinjs encodes txid as big-endian
     const txid = txidBuf.toString('hex');
 
@@ -233,7 +233,7 @@ export function parseMultiSigKeys(serializedPrivateKeys: string) : MultiSigKeySi
   if (!matches) {
     throw new Error('Invalid multisig private key string');
   }
-  
+
   const m = parseInt(matches[1]);
   const parts = serializedPrivateKeys.split(',');
   const privkeys = [];
@@ -250,7 +250,7 @@ export function parseMultiSigKeys(serializedPrivateKeys: string) : MultiSigKeySi
     privkeys.push(pk);
   }
 
-  // generate public keys 
+  // generate public keys
   const pubkeys = privkeys.map((pk) => {
     return Buffer.from(getPublicKeyFromPrivateKey(pk), 'hex');
   });
@@ -272,7 +272,7 @@ export function parseSegwitP2SHKeys(serializedPrivateKeys: string) : SegwitP2SHK
   if (!matches) {
     throw new Error('Invalid segwit p2sh private key string');
   }
-  
+
   const m = parseInt(matches[1]);
   const parts = serializedPrivateKeys.split(',');
   const privkeys = [];
@@ -289,16 +289,16 @@ export function parseSegwitP2SHKeys(serializedPrivateKeys: string) : SegwitP2SHK
     privkeys.push(pk);
   }
 
-  // generate public keys 
+  // generate public keys
   const pubkeys = privkeys.map((pk) => {
     return Buffer.from(getPublicKeyFromPrivateKey(pk), 'hex');
   });
 
-  // generate redeem script for p2wpkh or p2sh, depending on how many keys 
+  // generate redeem script for p2wpkh or p2sh, depending on how many keys
   let redeemScript : string;
   let witnessScript = '';
   if (m === 1) {
-    // p2wpkh 
+    // p2wpkh
     const p2wpkh = bitcoinjs.payments.p2wpkh({ pubkey: pubkeys[0] });
     const p2sh = bitcoinjs.payments.p2sh({ redeem: p2wpkh });
 
@@ -327,19 +327,19 @@ export function parseSegwitP2SHKeys(serializedPrivateKeys: string) : SegwitP2SHK
 export function decodePrivateKey(serializedPrivateKey: string) : string | CLITransactionSigner {
   const nosignMatches = serializedPrivateKey.match(PRIVATE_KEY_NOSIGN_PATTERN);
   if (!!nosignMatches) {
-    // no private key 
+    // no private key
     return parseNullSigner(serializedPrivateKey);
   }
 
   const singleKeyMatches = serializedPrivateKey.match(PRIVATE_KEY_PATTERN);
   if (!!singleKeyMatches) {
-    // one private key 
+    // one private key
     return serializedPrivateKey;
   }
 
   const multiKeyMatches = serializedPrivateKey.match(PRIVATE_KEY_MULTISIG_PATTERN);
   if (!!multiKeyMatches) {
-    // multisig bundle 
+    // multisig bundle
     return parseMultiSigKeys(serializedPrivateKey);
   }
 
@@ -412,8 +412,8 @@ export function canonicalPrivateKey(privkey: string) : string {
   }
   return privkey;
 }
-    
-/* 
+
+/*
  * Get the sum of a set of UTXOs' values
  * @txIn (object) the transaction
  */
@@ -437,7 +437,7 @@ export function checkUrl(url: string) : string {
   if (!urlinfo.protocol) {
     throw new Error(`Malformed full URL: missing scheme in ${url}`);
   }
- 
+
   if (!urlinfo.path || urlinfo.path.startsWith('//')) {
     throw new Error(`Malformed full URL: path root has multiple /'s: ${url}`);
   }
@@ -544,7 +544,7 @@ export function getNameInfoEasy(network: CLINetworkAdapter, name: string) : Prom
  * Look up a name's zone file, profile URL, and profile
  * Returns a Promise to the above, or throws an error.
  */
-export async function nameLookup(network: CLINetworkAdapter, name: string, includeProfile: boolean = true) 
+export async function nameLookup(network: CLINetworkAdapter, name: string, includeProfile: boolean = true)
   : Promise<{ profile: any, profileUrl?: string, zonefile?: string }> {
 
   const nameInfoPromise = getNameInfoEasy(network, name);
@@ -618,18 +618,18 @@ export function getpass(promptStr: string, cb: (passwd: string) => void) {
  */
 export async function getBackupPhrase(backupPhraseOrCiphertext: string, password?: string) : Promise<string> {
   if (backupPhraseOrCiphertext.split(/ +/g).length > 1) {
-    // raw backup phrase 
+    // raw backup phrase
     return backupPhraseOrCiphertext;
   }
   else {
-    // ciphertext 
+    // ciphertext
     const pass: string = await new Promise((resolve, reject) => {
       if (!process.stdin.isTTY && !password) {
-        // password must be given 
+        // password must be given
         reject(new Error('Password argument required in non-interactive mode'));
       }
       else {
-        // prompt password 
+        // prompt password
         getpass('Enter password: ', (p) => {
           resolve(p);
         });
@@ -681,7 +681,7 @@ export async function getIDAddress(network: CLINetworkAdapter, nameOrIDAddress: 
     return nameOrIDAddress;
   }
   else {
-    // need to look it up 
+    // need to look it up
     const nameInfo = await network.getNameInfo(nameOrIDAddress);
     return `ID-${nameInfo.address}`;
   }
@@ -691,8 +691,8 @@ export async function getIDAddress(network: CLINetworkAdapter, nameOrIDAddress: 
  * Find all identity addresses until we have one that matches the given one.
  * Loops forever if not found
  */
-export async function getOwnerKeyFromIDAddress(network: CLINetworkAdapter, 
-  mnemonic: string, 
+export async function getOwnerKeyFromIDAddress(network: CLINetworkAdapter,
+  mnemonic: string,
   idAddress: string
 ) : Promise<string> {
   let index = 0;
@@ -715,7 +715,7 @@ export interface IDAppKeys {
   appPrivateKey: string;
   mnemonic: string
 };
-      
+
 export async function getIDAppKeys(network: CLINetworkAdapter,
   nameOrIDAddress: string,
   appOrigin: string,

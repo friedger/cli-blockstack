@@ -2,13 +2,13 @@ import * as Ajv from 'ajv';
 import * as process from 'process';
 import * as fs from 'fs';
 
-export const NAME_PATTERN = 
+export const NAME_PATTERN =
   '^([0-9a-z_.+-]{3,37})$';
 
-export const NAMESPACE_PATTERN = 
+export const NAMESPACE_PATTERN =
   '^([0-9a-z_-]{1,19})$';
 
-export const ADDRESS_CHARS = 
+export const ADDRESS_CHARS =
   '[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{1,35}';
 
 export const C32_ADDRESS_CHARS = '[0123456789ABCDEFGHJKMNPQRSTVWXYZ]+';
@@ -20,15 +20,15 @@ export const ID_ADDRESS_PATTERN = `^ID-${ADDRESS_CHARS}$`;
 export const STACKS_ADDRESS_PATTERN = `^(${C32_ADDRESS_CHARS})$`;
 
 // hex private key
-export const PRIVATE_KEY_PATTERN = 
+export const PRIVATE_KEY_PATTERN =
   '^([0-9a-f]{64,66})$';
 
 // hex private key, no compression
-export const PRIVATE_KEY_UNCOMPRESSED_PATTERN = 
+export const PRIVATE_KEY_UNCOMPRESSED_PATTERN =
   '^([0-9a-f]{64})$';
 
 // nosign:addr
-export const PRIVATE_KEY_NOSIGN_PATTERN = 
+export const PRIVATE_KEY_NOSIGN_PATTERN =
   `^nosign:${ADDRESS_CHARS}$`;
 
 // m,pk1,pk2,...,pkn
@@ -39,11 +39,11 @@ export const PRIVATE_KEY_MULTISIG_PATTERN =
 export const PRIVATE_KEY_SEGWIT_P2SH_PATTERN =
   '^segwit:p2sh:([0-9]+),([0-9a-f]{64,66},)*([0-9a-f]{64,66})$';
 
-// any private key pattern we support 
-export const PRIVATE_KEY_PATTERN_ANY = 
+// any private key pattern we support
+export const PRIVATE_KEY_PATTERN_ANY =
   `${PRIVATE_KEY_PATTERN}|${PRIVATE_KEY_MULTISIG_PATTERN}|${PRIVATE_KEY_SEGWIT_P2SH_PATTERN}|${PRIVATE_KEY_NOSIGN_PATTERN}`;
 
-export const PUBLIC_KEY_PATTERN = 
+export const PUBLIC_KEY_PATTERN =
   '^([0-9a-f]{66,130})$';
 
 export const INT_PATTERN = '^-?[0-9]+$';
@@ -55,7 +55,7 @@ export const URL_PATTERN = '^http[s]?://.+$';
 export const SUBDOMAIN_PATTERN =
   '^([0-9a-z_+-]{1,37})\.([0-9a-z_.+-]{3,37})$';
 
-export const TXID_PATTERN = 
+export const TXID_PATTERN =
   '^([0-9a-f]{64})$';
 
 export const BOOLEAN_PATTERN = '^(0|1|true|false)$';
@@ -168,7 +168,7 @@ export const CLI_ARGS = {
       'If this command succeeds, it will print a transaction ID.  The rest of the Blockstack peer ' +
       'network will process it once the transaction reaches 7 confirmations.\n' +
       '\n' +
-      'Examples:\n' + 
+      'Examples:\n' +
       '\n' +
       '    $ # Tip: You can obtain the owner key with the get_owner_keys command\n' +
       '    $ export OWNER_KEY="136ff26efa5db6f06b28f9c8c7a0216a1a52598045162abfe435d13036154a1b01"\n' +
@@ -230,7 +230,7 @@ export const CLI_ARGS = {
     },
     balance: {
       type: 'array',
-      items: [ 
+      items: [
         {
           name: 'address',
           type: 'string',
@@ -367,7 +367,7 @@ export const CLI_ARGS = {
           name: 'name_or_id_address',
           type: 'string',
           realtype: 'name_or_id_address',
-          pattern: `${ID_ADDRESS_PATTERN}|${NAME_PATTERN}|${SUBDOMAIN_PATTERN}` 
+          pattern: `${ID_ADDRESS_PATTERN}|${NAME_PATTERN}|${SUBDOMAIN_PATTERN}`
         },
         {
           name: 'app_origin',
@@ -466,7 +466,7 @@ export const CLI_ARGS = {
       'For example, the file name a/b.txt, /a/b.txt, and ///a////b.txt will be treated as identical.\n' +
       '\n' +
       'Example without encryption:\n' +
-      '\n' + 
+      '\n' +
       '    $ # Get an unencrypted, unsigned file\n' +
       '    $ blockstack-cli gaia_getfile ryan.id http://public.ykliao.com statuses.json\n' +
       '    [{"id":0,"text":"Hello, Blockstack!","created_at":1515786983492}]\n' +
@@ -597,7 +597,7 @@ export const CLI_ARGS = {
           name: 'name_or_id_address',
           type: 'string',
           realtype: 'name_or_id_address',
-          pattern: `${ID_ADDRESS_PATTERN}|${NAME_PATTERN}|${SUBDOMAIN_PATTERN}` 
+          pattern: `${ID_ADDRESS_PATTERN}|${NAME_PATTERN}|${SUBDOMAIN_PATTERN}`
         },
         {
           name: 'app_origin',
@@ -1148,7 +1148,7 @@ export const CLI_ARGS = {
       'Example:\n' +
       '\n' +
       '    $ blockstack-cli make_keychain\n' +
-      '    {\n' + 
+      '    {\n' +
       '      "mnemonic": "apart spin rich leader siren foil dish sausage fee pipe ethics bundle",\n' +
       '      "ownerKeyInfo": {\n' +
       '        "idAddress": "ID-192yxWSvZrss3f4ZY48tUMJJxQvuB6DcXE",\n' +
@@ -1199,7 +1199,7 @@ export const CLI_ARGS = {
       minItems: 3,
       maxItems: 4,
       help: 'Generate a zone file for a Blockstack ID with the given profile URL.  If you know ' +
-      'the ID-address for the Blockstack ID, the profile URL usually takes the form of:\n' + 
+      'the ID-address for the Blockstack ID, the profile URL usually takes the form of:\n' +
       '\n' +
       '     {GAIA_URL_PREFIX}/{ADDRESS}/profile.json\n' +
       '\n' +
@@ -1283,7 +1283,7 @@ export const CLI_ARGS = {
       '\n' +
       '    $ export REVEAL_KEY="bfeffdf57f29b0cc1fab9ea197bb1413da2561fe4b83e962c7f02fbbe2b1cd5401"\n' +
       '    $ export ID_ADDRESS="ID-18e1bqU7B5qUPY3zJgMLxDnexyStTeSnvV"\n' +
-      '    $ blockstack-cli name_import example.id "$ID_ADDRESS" https://gaia.blockstack.org/hub "$REVEAL_KEY"\n' + 
+      '    $ blockstack-cli name_import example.id "$ID_ADDRESS" https://gaia.blockstack.org/hub "$REVEAL_KEY"\n' +
       '    f726309cea7a9db364307466dc0e0e759d5c0d6bad1405e2fd970740adc7dc45\n' +
       '\n',
       group: 'Namespace Operations'
@@ -1674,7 +1674,7 @@ export const CLI_ARGS = {
       help: 'If you are trying to register a name for a *private key*, use this command.\n' +
       '\n' +
       'Register a name to a single name-owning private key.  After successfully running this command, ' +
-      'and after waiting a couple hours, your name will be ready to use and will resolve to a ' + 
+      'and after waiting a couple hours, your name will be ready to use and will resolve to a ' +
       'signed empty profile hosted on the given Gaia hub (GAIA_HUB).\n' +
       '\n' +
       'Behind the scenes, this will generate and send two transactions ' +
@@ -1742,7 +1742,7 @@ export const CLI_ARGS = {
       '\n' +
       'Register a name to someone\'s ID-address.  After successfully running this ' +
       'command and waiting a couple of hours, the name will be registered on-chain and have a ' +
-      'zone file with a URL to where the owner\'s profile should be.  This command does NOT ' + 
+      'zone file with a URL to where the owner\'s profile should be.  This command does NOT ' +
       'generate, sign, or replicate a profile for the name---the name owner will need to do this ' +
       'separately, once the name is registered.\n' +
       '\n' +
@@ -1820,7 +1820,7 @@ export const CLI_ARGS = {
       'Example:\n' +
       '\n' +
       '    $ export OWNER="6e50431b955fe73f079469b24f06480aee44e4519282686433195b3c4b5336ef01"\n' +
-      '    $ # NOTE: https://registrar.blockstack.org is the registrar for personal.id!\n' + 
+      '    $ # NOTE: https://registrar.blockstack.org is the registrar for personal.id!\n' +
       '    $ blockstack-cli register_subdomain hello.personal.id "$OWNER" https://hub.blockstack.org https://registrar.blockstack.org\n',
       group: 'Blockstack ID Management'
     },
@@ -2384,7 +2384,7 @@ function formatHelpString(indent: number, limit: number, helpString: string) : s
 
     for (let j = 0; j < words.length; j++) {
       if (words[j].length === 0) {
-        // explicit line break 
+        // explicit line break
         linebuf += '\n';
         break;
       }
@@ -2404,7 +2404,7 @@ function formatHelpString(indent: number, limit: number, helpString: string) : s
 /*
  * Format command usage lines.
  * Generate two strings:
- * raw string: 
+ * raw string:
  *    COMMAND ARG_NAME ARG_NAME ARG_NAME [OPTINONAL ARG NAME]
  * keyword string:
  *    COMMAND --arg_name TYPE
@@ -2441,7 +2441,7 @@ function formatCommandHelpLines(commandName: string, commandArgs: Array<CLI_PROP
   for (let i = 0; i < commandName.length + 3; i++) {
     kwPad += ' ';
   }
-  
+
   for (let i = 0; i < commandArgs.length; i++) {
     if (!commandArgs[i].realtype) {
       console.log(commandName);
@@ -2479,13 +2479,13 @@ function getCommandGroups() : CLI_COMMAND_GROUP {
   for (let i = 0; i < commands.length; i++) {
     const command = commands[i];
     const group = CLI_ARGS.properties[command].group;
-    
+
     if (!groups.hasOwnProperty(group)) {
       groups[group] = [
         {
           'command': command,
           'help': CLI_ARGS.properties[command].help
-        } as CLI_COMMAND_GROUP_ITEM 
+        } as CLI_COMMAND_GROUP_ITEM
       ];
     }
     else {
@@ -2532,7 +2532,7 @@ export function makeAllCommandsList() : string {
 export function makeAllCommandsHelp(): string {
   const groups = getCommandGroups();
   const groupNames = Object.keys(groups).sort();
-  
+
   const helps = [];
   let cmds = [];
   for (let i = 0; i < groupNames.length; i++) {
@@ -2567,11 +2567,11 @@ export function makeCommandUsageString(command?: string) : string {
   }
 
   const help = commandInfo.help;
-  
+
   const cmdFormat = formatCommandHelpLines(command, commandInfo.items);
   const formattedHelp = formatHelpString(2, 78, help);
 
-  // make help string for one command 
+  // make help string for one command
   res += `Command: ${command}\n`;
   res += 'Usage:\n';
   res += `${cmdFormat.raw}\n`;
@@ -2610,8 +2610,8 @@ export function makeUsageString() : string {
       res += '\n';
     }
     res += '\n';
-  }    
-  
+  }
+
   return res;
 }
 
@@ -2749,10 +2749,10 @@ export function getCommandArgs(command: string, argsList: Array<string>) {
   const orderedArgs = [];
   const foundArgs : Record<string, string> = {};
 
-  // scan for keywords 
+  // scan for keywords
   for (let i = 0; i < argsList.length; i++) {
     if (argsList[i].startsWith('--')) {
-      // keyword argument 
+      // keyword argument
       const argName = argsList[i].slice(2);
       let argValue = null;
 
@@ -2808,7 +2808,7 @@ export function getCommandArgs(command: string, argsList: Array<string>) {
   for (let i = 0; i < commandProps.length; i++) {
     if (orderedArgIndex < orderedArgs.length) {
       if (!commandProps[i].hasOwnProperty('name')) {
-        // unnamed positional argument 
+        // unnamed positional argument
         mergedArgs.push(orderedArgs[orderedArgIndex]);
         orderedArgIndex += 1;
       }
@@ -2850,7 +2850,7 @@ export interface CheckArgsFailType {
   usage: boolean
 };
 
-export function checkArgs(argList: Array<string>) 
+export function checkArgs(argList: Array<string>)
   : CheckArgsSuccessType | CheckArgsFailType {
   if (argList.length <= 2) {
     return {
@@ -2917,8 +2917,8 @@ export function checkArgs(argList: Array<string>)
   }
 
   return {
-    'success': true, 
-    'command': commandName, 
+    'success': true,
+    'command': commandName,
     'args': commandArgs
   };
 }
